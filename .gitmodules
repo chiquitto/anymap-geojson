@@ -1,0 +1,3 @@
+[submodule "municipal-brazilian-geodata"]
+	path = municipal-brazilian-geodata
+	url = https://github.com/chiquitto/municipal-brazilian-geodata.git
