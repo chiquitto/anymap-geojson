@@ -1,0 +1,16 @@
+{
+    "name": "chiquitto/anymap-geojson",
+    "description": "Mapear GeoJson fornecido pelo IBGE para uso no AnyMap",
+    "authors": [
+        {
+            "name": "Alisson Chiquitto",
+            "email": "chiquitto@chiquitto.com.br"
+        }
+    ],
+    "require": {
+        "anahkiasen/underscore-php": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {"AnymapGeoJson\\": "src/"}
+    }
+}
