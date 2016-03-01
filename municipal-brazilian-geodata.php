@@ -4,14 +4,20 @@ use AnymapGeoJson\MunicipalBrazilianGeodata;
 use Composer\Autoload\ClassLoader;
 
 define('PATH', realpath(__DIR__));
+define('PATH_DATA', PATH . '/municipal-brazilian-geodata/data');
 
 /* @var $autoload ClassLoader */
 $autoload = require PATH . '/vendor/autoload.php';
 
 $mbg = new MunicipalBrazilianGeodata();
 
-$di = new DirectoryIterator(PATH . '/municipal-brazilian-geodata/data');
+// Brasil
+echo "Processando Brasil.json\n";
+$brasilObject = json_decode(file_get_contents(PATH_DATA . '/Brasil.json'));
+$mbg->processBrasilJson($brasilObject);
 
+// Uf
+$di = new DirectoryIterator(PATH_DATA);
 foreach ($di as $directory) {
     /* @var $directory DirectoryIterator */
 
@@ -20,7 +26,7 @@ foreach ($di as $directory) {
     }
     
     $uf = $matches[1];
-    echo "Processando $uf\n";
+    echo "Processando {$directory->getFilename()}\n";
     
     $ufObject = json_decode(file_get_contents($directory->getPathname()));
 

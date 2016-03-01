@@ -31,6 +31,53 @@ class MunicipalBrazilianGeodata
         }
     }
 
+    public function processBrasilJson(stdClass $brasilObject)
+    {
+        $ufs = [];
+
+        $ids = [
+            'AC' => 12,
+            'AL' => 27,
+            'AM' => 13,
+            'AP' => 16,
+            'BA' => 29,
+            'CE' => 23,
+            'DF' => 53,
+            'ES' => 32,
+            'GO' => 52,
+            'MA' => 21,
+            'MG' => 31,
+            'MS' => 50,
+            'MT' => 51,
+            'PA' => 15,
+            'PB' => 25,
+            'PE' => 26,
+            'PI' => 22,
+            'PR' => 41,
+            'RJ' => 33,
+            'RN' => 24,
+            'RO' => 11,
+            'RR' => 14,
+            'RS' => 43,
+            'SC' => 42,
+            'SE' => 28,
+            'SP' => 35,
+            'TO' => 17,
+        ];
+
+        foreach ($brasilObject->features as & $uf) {
+            $uf->properties = (object) [
+                        'id' => $ids[$uf->properties->UF],
+                        'name' => $uf->properties->ESTADO,
+                        'sigla' => $uf->properties->UF,
+            ];
+        }
+        
+        $json = json_encode($brasilObject);
+
+        file_put_contents("{$this->outputDirectory}/bra.json", $json);
+    }
+
     public function processUfJson(stdClass $ufObject)
     {
         $municipios = [];
@@ -85,7 +132,7 @@ class MunicipalBrazilianGeodata
     {
         // Remove islands
         $coordinates = [];
-        
+
         foreach ($municipio->geometry->coordinates as $coordinate) {
             if (($coordinate[0][0] == -29.34624) && ($coordinate[0][1] == -20.5031)) {
                 continue;
@@ -96,10 +143,10 @@ class MunicipalBrazilianGeodata
             } elseif (($coordinate[0][0] == -28.83889) && ($coordinate[0][1] == -20.46453)) {
                 continue;
             }
-            
+
             $coordinates[] = $coordinate;
         }
-        
+
         $municipio->geometry->coordinates = $coordinates;
     }
 
